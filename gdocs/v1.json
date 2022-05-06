@@ -1,0 +1,70 @@
+{
+  "name": "v1",
+  "description": "docs for \"MY API\" v1",
+  "subgroups": {
+    "auth": [
+      {
+        "annotation": "авторизация через VK",
+        "description": [
+          "Метод позволяет авторизоваться через соц. сеть VK"
+        ],
+        "method": "POST",
+        "route": "/auth/providers/vk"
+      },
+      {
+        "annotation": "авторизация через Google",
+        "description": [
+          "Метод позволяет авторизоваться через Google"
+        ],
+        "method": "POST",
+        "route": "/auth/providers/google"
+      },
+      {
+        "annotation": "авторизация через Instagram",
+        "description": [
+          "Метод позволяет авторизоваться через соц. сеть Instagram"
+        ],
+        "method": "POST",
+        "route": "/auth/providers/inst"
+      },
+      {
+        "annotation": "список провайдеров",
+        "description": [],
+        "method": "GET",
+        "route": "/auth/providers"
+      }
+    ],
+    "users": [
+      {
+        "annotation": "список юзеров",
+        "description": [],
+        "method": "GET",
+        "route": "/users"
+      },
+      {
+        "annotation": "добавить юзра",
+        "description": [],
+        "method": "POST",
+        "route": "/users"
+      },
+      {
+        "annotation": "обновить все поля юзера",
+        "description": [],
+        "method": "PUT",
+        "route": "/users/:id"
+      },
+      {
+        "annotation": "обновить имя юзера",
+        "description": [],
+        "method": "PATCH",
+        "route": "/users/:id/name"
+      },
+      {
+        "annotation": "удалить юзера",
+        "description": [],
+        "method": "DELETE",
+        "route": "/users/:id"
+      }
+    ]
+  }
+}

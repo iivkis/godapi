@@ -1,0 +1,16 @@
+{
+  "name": "main",
+  "description": "Main group",
+  "subgroups": {
+    "default": [
+      {
+        "annotation": "print hey",
+        "description": [
+          "this method write `Hex!`"
+        ],
+        "method": "GET",
+        "route": "/hey"
+      }
+    ]
+  }
+}
