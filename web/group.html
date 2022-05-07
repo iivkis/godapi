@@ -1,145 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GodAPI</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        crossorigin="anonymous">
-</head>
-
-<style>
-    body {
-        background: #eee;
-    }
-
-    span[method] {
-        color: white;
-        background: #5d5d5d;
-        font-family: sans-serif;
-        font-size: 1.2rem;
-    }
-
-    span[method="POST"] {
-        background: #00bfa5;
-    }
-
-    span[method="GET"] {
-        background: #0091ea;
-    }
-
-    span[method="PUT"] {
-        background: #c51162;
-    }
-
-    span[method="PATCH"] {
-        background: #f50057;
-    }
-
-    span[method="DELETE"] {
-        background: #ff3d00;
-    }
-
-
-    .route span:nth-child(1) {
-        position: relative;
-        font-family: sans-serif;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
-
-    .route span:nth-child(1)::after {
-        content: '';
-        display: block;
-        position: absolute;
-        padding: 2px;
-        border-radius: 100%;
-        background: #3d3d3d;
-
-        right: -10px;
-        top: 50%;
-    }
-
-    .subgroup__link {
-        color: #3d3d3d;
-        padding-inline: 10px;
-        font-size: 1.7em;
-        text-decoration: none;
-    }
-
-    .c-pointer {
-        cursor: pointer;
-    }
-</style>
+<!-- head -->
+{{template "_head.html" .}}
+<!-- /head -->
 
 <body>
     <div class="container-fluid">
         <div class="d-flex flex-wrap justify-content-center">
             <!-- header -->
-            <div class="col-11 p-2 px-3 bg-white shadow-sm d-inline-flex">
-                <h3>God<b class="text-success">API</b></h3>
-                <span class="m-1">v{{.main.AppVersion}}</span>
-            </div>
+            {{template "_header.html" .}}
             <!-- /header -->
 
             <!-- routes -->
-            <div class="col-11 d-flex flex-column">
-                <!-- subgroup -->
-                {{range $subgroup, $items := .current.Subgroups}}
-                <div class="col-12 d-flex flex-wrap mt-4">
-
-                    <!-- subgroup name -->
-                    <div class="col-12 px-3 d-inline-flex justify-content-between align-items-center border-bottom"
-                        id="sg-{{$subgroup}}">
-                        <a href="#sg-{{$subgroup}}" class="subgroup__link">{{$subgroup}}</a>
-                        <span class="c-pointer" onclick="toggleSubgroupVisibility('{{$subgroup}}', event)">hide</span>
-                    </div>
-                    <!-- subgroup name -->
-
-                    <!-- items -->
-                    <div class="col-12" id="subgroup-{{$subgroup}}-items">
-                        {{range $item := $items}}
-                        <div class="col-12 d-flex bg-white mt-2 align-items-center shadow-sm">
-                            <span class="col-1 px-3 p-2" method="{{$item.Method}}">{{$item.Method}}</span>
-                            <div class="route mx-3 col d-flex align-items-center">
-                                <span>{{$item.Route}}</span>
-                                <span class="mx-3">{{$item.Annotation}}</span>
-                            </div>
-                        </div>
-                        {{end}}
-                        <!-- /items -->
-                    </div>
-
-                </div>
-                {{end}}
-                <!-- subgroup -->
-
-            </div>
+            {{template "group__routes.html" .}}
             <!-- /routes -->
         </div>
-
     </div>
 </body>
-
-<script>
-    function toggleSubgroupVisibility(subgroup, event) {
-        let el = document.getElementById("subgroup-" + subgroup + "-items")
-        if (el.getAttribute('hidden') == null) {
-            el.setAttribute('hidden', '')
-            event.target.innerText = 'show';
-        }
-        else {
-            el.removeAttribute('hidden')
-            event.target.innerText = 'hide';
-        }
-    }
-
-    function toggleText(e) {
-        console.log(e);
-    }
-</script>
 
 </html>

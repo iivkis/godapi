@@ -16,14 +16,17 @@ package app
 //@Route post /auth/providers/inst
 
 //@New "список провайдеров"
+//@Desc "Возвращает список все провайдеров"
 //@Group v1 auth
 //@Route GET /auth/providers
 
 //@New "список юзеров"
+//@Desc "Возвращает список всех юзеров"
 //@Group v1 users
 //@Route GET /users
 
-//@New "добавить юзра"
+//@New "Создать юзера"
+//@Desc "С помощью метода можно создать нового <i>юзера</i>"
 //@Group v1 users
 //@Route POST /users
 
@@ -38,6 +41,26 @@ package app
 //@New "удалить юзера"
 //@Group v1 users
 //@Route DELETE /users/:id
+
+//@New "список групп"
+//@Group v1 groups
+//@Route GET /groups
+
+//@New "добавить группу"
+//@Group v1 groups
+//@Route POST /groups
+
+//@New "обновить все поля группы"
+//@Group v1 groups
+//@Route PUT /groups/:id
+
+//@New "обновить имя группу"
+//@Group v1 groups
+//@Route PATCH /groups/:id/name
+
+//@New "удалить группу"
+//@Group v1 groups
+//@Route DELETE /groups/:id
 
 //@New "print hey"
 //@Desc "this method write `Hex!`"

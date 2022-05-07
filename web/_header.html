@@ -1,0 +1,23 @@
+<!-- header -->
+<div class="col-11 p-2 px-3 bg-white d-flex flex-justify-between shadow-sm">
+    <div class="col d-inline-flex align-items-center">
+        <h3>God<b class="text-success">API</b></h3>
+        <span class="m-1">v{{.main.AppVersion}}</span>
+    </div>
+
+    <div class="col d-flex align-items-center">
+        <span class="col-5 d-flex justify-content-end mx-3">Select group:</span>
+        <select class="col form-select form-select-sm" onchange="location = this.value">
+            {{$groupName := .current_group.Name}}
+            {{range $group := .main.Groups}}
+            {{if eq $group $groupName}}
+            <option value="./{{$group}}.html" selected>{{$group}}</option>
+            {{else}}
+            <option value="./{{$group}}.html">{{$group}}</option>
+            {{end}}
+            {{end}}
+        </select>
+    </div>
+
+</div>
+<!-- /header -->

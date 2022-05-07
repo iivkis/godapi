@@ -1,0 +1,71 @@
+body {
+    background: #eee;
+    overflow-y: scroll;
+}
+
+span[method] {
+    color: white;
+    background: #5d5d5d;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+}
+
+span[method="POST"] {
+    background: #00bfa5;
+}
+
+span[method="GET"] {
+    background: #0091ea;
+}
+
+span[method="PUT"] {
+    background: #c51162;
+}
+
+span[method="PATCH"] {
+    background: #f50057;
+}
+
+span[method="DELETE"] {
+    background: #ff3d00;
+}
+
+
+.subgroup__link {
+    color: #3d3d3d;
+    padding: 0 10px;
+    font-size: 1.7em;
+    text-decoration: none;
+}
+
+.c-pointer {
+    cursor: pointer;
+}
+
+.items__list a {
+    text-decoration: none;
+    color: #3d3d3d;
+}
+
+
+.items_list__route span:nth-child(1) {
+    position: relative;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.items_list__route span:nth-child(1)::after {
+    content: '';
+    display: block;
+    position: absolute;
+    padding: 2px;
+    border-radius: 100%;
+    background: #3d3d3d;
+
+    right: -10px;
+    top: 50%;
+}
+
+.items_list__desc {
+    border-left: 2px solid black;
+}

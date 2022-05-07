@@ -1,0 +1,49 @@
+<!-- routes -->
+<div class="col-11 d-flex flex-column mb-4">
+    <!-- subgroup -->
+    {{range $subgroup, $items := .current_group.Subgroups}}
+    <div class="col-12 d-flex flex-wrap mt-4">
+
+        <!-- subgroup name -->
+        <div class="col-12 px-3 d-flex justify-content-between align-items-center border-bottom" id="sg-{{$subgroup}}">
+            <a href="#sg-{{$subgroup}}" class="subgroup__link">{{$subgroup}}</a>
+            <span class="c-pointer" onclick="toggleSubgroupVisibility('{{$subgroup}}', event)">hide</span>
+        </div>
+        <!-- subgroup name -->
+
+        <!-- items -->
+        <div class="items__list col-12" id="subgroup-{{$subgroup}}-items">
+            {{range $item := $items}}
+            <a class="col-12 d-flex flex-wrap bg-white mt-2 align-items-center shadow-sm"
+                id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
+                href="#{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
+                onclick="toggleItemVisibility('{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info')">
+
+                <span class="col-1 px-3 p-2" method="{{$item.Method}}">{{$item.Method}}</span>
+                <div class="items_list__route col-10 mx-3 d-flex align-items-center">
+                    <span>{{$item.Route}}</span>
+                    <span class="mx-3">{{$item.Annotation}}</span>
+                </div>
+
+                <!-- item information -->
+                <div class="items_list__wrap col-12 p-2" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info"
+                    hidden>
+                    <!-- desc -->
+                    <div class="items_list__desc col-12 d-flex flex-column bg-light">
+                        {{range $item.Description}}
+                        <p class="p-2">{{.}}</p>
+                        {{end}}
+                    </div>
+                    <!-- /desc -->
+                </div>
+                <!-- /item information -->
+            </a>
+            {{end}}
+        </div>
+        <!-- /items -->
+
+    </div>
+    {{end}}
+    <!-- subgroup -->
+</div>
+<!-- /routes -->

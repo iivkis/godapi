@@ -20,7 +20,7 @@ func fullInputDirPath() string {
 	fullpath := path.Join(p, appFlags.InputDir)
 
 	if _, err := os.Stat(fullpath); os.IsNotExist(err) {
-		fmt.Printf("Incorrect path `%s`\n", fullpath)
+		fmt.Printf("Error: incorrect path `%s`\n", fullpath)
 		os.Exit(0)
 	}
 
