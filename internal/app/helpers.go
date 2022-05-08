@@ -1,14 +1,15 @@
 package app
 
 import (
-	"bufio"
 	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
 	"io/fs"
 	"os"
 	"path"
 	"path/filepath"
 	"regexp"
-	"strings"
 )
 
 func fullInputDirPath() string {
@@ -18,7 +19,6 @@ func fullInputDirPath() string {
 	}
 
 	fullpath := path.Join(p, appFlags.InputDir)
-
 	if _, err := os.Stat(fullpath); os.IsNotExist(err) {
 		fmt.Printf("Error: incorrect path `%s`\n", fullpath)
 		os.Exit(0)
@@ -32,21 +32,21 @@ func fullOutputDirPath() string {
 	return path.Join(p, appFlags.OutputDir)
 }
 
-func openEachFile(inDir string, pattern string, fn func(*os.File) error) error {
+func openEachFile(inDir string, pattern string, fn func(*ast.File) error) error {
 	re, err := regexp.Compile(pattern)
 	if err != nil {
 		return err
 	}
 
 	return filepath.WalkDir(inDir, func(path string, d fs.DirEntry, err error) error {
+		fs := token.NewFileSet()
 		if !d.IsDir() && re.MatchString(d.Name()) {
-			file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
+			af, err := parser.ParseFile(fs, path, nil, parser.ParseComments)
 			if err != nil {
-				panic(err)
+				return err
 			}
-			defer file.Close()
 
-			if fn(file) != nil {
+			if fn(af) != nil {
 				return err
 			}
 		}
@@ -54,16 +54,13 @@ func openEachFile(inDir string, pattern string, fn func(*os.File) error) error {
 	})
 }
 
-func scanFileComments(file *os.File, fn func(comment string)) error {
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		if err := scanner.Err(); err != nil {
-			return err
-		}
-
-		line := []byte(strings.TrimSpace(scanner.Text()))
-		if len(line) > 3 && string(line[:3]) == "//@" {
-			fn(string(line[3:]))
+func scanFileComments(af *ast.File, fn func(comment string)) error {
+	for _, commentGroup := range af.Comments {
+		for _, comment := range commentGroup.List {
+			line := []byte(comment.Text)
+			if len(line) > 3 && string(line[:3]) == "//@" {
+				fn(string(line[3:]))
+			}
 		}
 	}
 	return nil

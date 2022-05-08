@@ -12,6 +12,7 @@ import (
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/css"
 	"github.com/tdewolff/minify/v2/html"
+	"github.com/tdewolff/minify/v2/js"
 )
 
 type DocHTMLBuilder struct {
@@ -40,16 +41,20 @@ func (w *DocHTMLBuilder) initMinifier() {
 
 	w.minify.Add("text/html", &html.Minifier{
 		KeepEndTags:             true,
-		KeepComments:            true,
+		KeepComments:            false,
 		KeepConditionalComments: true,
 		KeepDefaultAttrVals:     true,
 		KeepDocumentTags:        true,
 		KeepQuotes:              true,
-		KeepWhitespace:          true,
+		KeepWhitespace:          false,
 	})
 
 	w.minify.Add("text/css", &css.Minifier{
-		KeepCSS2:  true,
+		KeepCSS2:  false,
+		Precision: 2,
+	})
+
+	w.minify.Add("text/javascript", &js.Minifier{
 		Precision: 1,
 	})
 }
@@ -103,6 +108,10 @@ func (w *DocHTMLBuilder) copySrc(outDir string) error {
 		switch filepath.Ext(info.Name()) {
 		case ".css":
 			if err := w.minify.Minify("text/css", fOut, fIn); err != nil {
+				return err
+			}
+		case ".js":
+			if err := w.minify.Minify("text/javascript", fOut, fIn); err != nil {
 				return err
 			}
 		default:

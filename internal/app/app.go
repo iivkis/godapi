@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"go/ast"
 	"godapi/internal/docengine"
 	"os"
 )
@@ -13,15 +14,21 @@ func Launch() {
 	setDocFuncs(docs)
 
 	//open each go file in InputDir, parse comments & execute funcs
-	openEachFile(fullInputDirPath(), `^.*\.go$`, func(file *os.File) (err error) {
-		return scanFileComments(file, func(comment string) {
+	if err := openEachFile(fullInputDirPath(), `^.*\.go$`, func(af *ast.File) (err error) {
+		err = scanFileComments(af, func(comment string) {
 			obj := tokensToObject(tokenize(comment))
 			if err := docs.ExecFunc(obj.Method, obj.Args); err != nil {
 				fmt.Printf("Execute error: %s", err.Error())
 				os.Exit(0)
 			}
 		})
-	})
+		if err != nil {
+			return err
+		}
+		return nil
+	}); err != nil {
+		panic(err)
+	}
 
 	//compile docs
 	if err := docs.Compile(); err != nil {
