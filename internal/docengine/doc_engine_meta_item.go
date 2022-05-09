@@ -13,11 +13,19 @@ type MetaItem struct {
 
 	Method string
 	Route  string
+
+	Params *MetaItemParams
+}
+
+type MetaItemParams struct {
+	BodyStructName  string
+	QueryStructName string
 }
 
 func NewMetaItem() *MetaItem {
 	return &MetaItem{
 		Description: make([]string, 0),
+		Params:      &MetaItemParams{},
 	}
 }
 

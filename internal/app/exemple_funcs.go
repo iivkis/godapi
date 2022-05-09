@@ -1,6 +1,12 @@
 package app
 
+type AuthWithProviderVKInput struct {
+	Login    string
+	Password string
+}
+
 //@New "авторизация через VK"
+//@Param body AuthWithProviderVKInput
 //@Desc "Метод позволяет авторизоваться через соц. сеть VK"
 //@Group v1 auth
 //@Route post /auth/providers/vk

@@ -36,8 +36,9 @@ func tokenize(s string) (tokens []string) {
 }
 
 type tObj struct {
-	Method string
-	Args   []string
+	Method  string
+	Package string
+	Args    []string
 }
 
 func tokensToObject(s []string) *tObj {

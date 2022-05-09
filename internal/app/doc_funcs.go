@@ -71,6 +71,18 @@ func setDocItemFuncs(doc *docengine.DocEngine) {
 		return nil
 	})
 
+	//arg_1 - query/body
+	//arg_2 - struct name
+	doc.AddFunc("Param", 2, func(meta *docengine.DocEngineMeta, args []string) error {
+		switch args[0] {
+		case "body":
+			item.Params.BodyStructName = args[len(args)-1] + "." + args[1]
+		case "quert":
+			item.Params.QueryStructName = args[len(args)-1] + "." + args[1]
+		}
+		return nil
+	})
+
 	//arg_1 - request method (GET, POST, PUT, DELETE, etc.)
 	//arg_2 - route (example: /users)
 	doc.AddFunc("Route", 2, func(meta *docengine.DocEngineMeta, args []string) error {

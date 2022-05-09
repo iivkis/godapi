@@ -77,15 +77,10 @@ func (b *DocCompiler) initItems(items []*MetaItem) {
 				continue
 			}
 		} else {
-			fmt.Printf("@Group: undefined group `%s`\n", item.Group)
+			fmt.Printf("Warning @Group: undefined group `%s`\n", item.Group)
 			fmt.Println(item.ToString())
 			return
 		}
-
-		//create subgroup if not exists
-		// if b.Groups[item.Group].Subgroups[item.Subgroup] == nil {
-		// 	b.Groups[item.Group].Subgroups[item.Subgroup] = make(map[string]*DocCompilerSubgroupItem)
-		// }
 
 		//add item to [group][subgroup]
 		b.Groups[item.Group].Subgroups[item.Subgroup] = append(b.Groups[item.Group].Subgroups[item.Subgroup], &DocCompilerSubgroupItem{

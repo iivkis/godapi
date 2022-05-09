@@ -1,22 +1,27 @@
 package docengine
 
 import (
+	"go/ast"
 	"os"
 )
 
 type DocEngine struct {
-	Meta     *DocEngineMeta
+	Meta *DocEngineMeta
+
 	compiler *DocCompiler
-	funcs    map[string]DocEngineFuncData
+	funcs    map[string]DocEngineAddFuncData
 
 	outDir string
+
+	Structs map[string]*ast.StructType
 }
 
 func NewDocEngine(outDir string) *DocEngine {
 	return &DocEngine{
 		Meta:     NewDocEngineMeta(),
 		compiler: NewDocCompiler(),
-		funcs:    make(map[string]DocEngineFuncData),
+		funcs:    make(map[string]DocEngineAddFuncData),
+		Structs:  make(map[string]*ast.StructType),
 		outDir:   outDir,
 	}
 }

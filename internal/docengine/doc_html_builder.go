@@ -49,14 +49,9 @@ func (w *DocHTMLBuilder) initMinifier() {
 		KeepWhitespace:          false,
 	})
 
-	w.minify.Add("text/css", &css.Minifier{
-		KeepCSS2:  false,
-		Precision: 2,
-	})
+	w.minify.Add("text/css", &css.Minifier{})
 
-	w.minify.Add("text/javascript", &js.Minifier{
-		Precision: 1,
-	})
+	w.minify.Add("text/javascript", &js.Minifier{})
 }
 
 func (w *DocHTMLBuilder) makeOutDir(outDir string) error {
@@ -67,12 +62,14 @@ func (w *DocHTMLBuilder) renderGroups(outDir string) error {
 	for _, group := range w.compiler.Groups {
 		var buf bytes.Buffer
 
+		//create file for each group
 		f, err := os.Create(path.Join(outDir, "./html/", group.Name+".html"))
 		if err != nil {
 			return err
 		}
 		defer f.Close()
 
+		//execute template
 		if err := w.templates.ExecuteTemplate(&buf, "group.html", map[string]interface{}{
 			"current_group": group,
 			"main":          w.compiler.MainInfo,
@@ -80,6 +77,7 @@ func (w *DocHTMLBuilder) renderGroups(outDir string) error {
 			return err
 		}
 
+		//minify html code & save to file
 		if err := w.minify.Minify("text/html", f, &buf); err != nil {
 			return err
 		}
@@ -93,18 +91,21 @@ func (w *DocHTMLBuilder) copySrc(outDir string) error {
 			return err
 		}
 
+		//open input file
 		fIn, err := os.Open(fpath)
 		if err != nil {
 			return err
 		}
 		defer fIn.Close()
 
+		// create output file
 		fOut, err := os.Create(path.Join(outDir, "./html/src", info.Name()))
 		if err != nil {
 			return err
 		}
 		defer fOut.Close()
 
+		// minify files from src
 		switch filepath.Ext(info.Name()) {
 		case ".css":
 			if err := w.minify.Minify("text/css", fOut, fIn); err != nil {
