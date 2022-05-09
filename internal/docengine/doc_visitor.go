@@ -5,8 +5,7 @@ import "go/ast"
 type DocVisitor struct {
 	CurrentPackageName string
 	Structs            map[string]*ast.StructType
-
-	lastIdent *ast.Ident
+	lastIdent          *ast.Ident
 }
 
 func NewDocVisitor() *DocVisitor {

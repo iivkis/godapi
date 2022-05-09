@@ -5,23 +5,25 @@ import (
 	"os"
 )
 
+// key - "[package].[struct_name]"
+type DocEngineStructs map[string]*ast.StructType
+
 type DocEngine struct {
-	Meta *DocEngineMeta
+	Meta    *DocEngineMeta
+	Structs DocEngineStructs
 
 	compiler *DocCompiler
 	funcs    map[string]DocEngineAddFuncData
-
-	outDir string
-
-	Structs map[string]*ast.StructType
+	outDir   string
 }
 
 func NewDocEngine(outDir string) *DocEngine {
 	return &DocEngine{
-		Meta:     NewDocEngineMeta(),
+		Meta:    NewDocEngineMeta(),
+		Structs: make(map[string]*ast.StructType),
+
 		compiler: NewDocCompiler(),
 		funcs:    make(map[string]DocEngineAddFuncData),
-		Structs:  make(map[string]*ast.StructType),
 		outDir:   outDir,
 	}
 }
@@ -30,10 +32,10 @@ func (d *DocEngine) Compile() error {
 	d.compiler = NewDocCompiler()
 
 	//create groups
-	d.compiler.initGroups(d.Meta.Groups)
+	d.compiler.initGroups(d.Meta)
 
 	//distribution of items by groups and subgroups
-	d.compiler.initItems(d.Meta.Items, d.Structs)
+	d.compiler.initItems(d.Meta, d.Structs)
 
 	//set values to MainInfo
 	d.compiler.initMainInfo(d.Meta)

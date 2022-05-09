@@ -14,7 +14,7 @@ type DocCompilerItemParam struct {
 type DocCompilerItemParamField struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
-	Tags string
+	Tags string `json:"-"`
 }
 
 func NewDocCompilerItemParam(name string, located string, s *ast.StructType) *DocCompilerItemParam {

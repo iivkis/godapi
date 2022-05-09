@@ -2,7 +2,6 @@ package docengine
 
 import (
 	"fmt"
-	"go/ast"
 	"os"
 )
 
@@ -50,8 +49,15 @@ func NewDocCompiler() *DocCompiler {
 	}
 }
 
-func (b *DocCompiler) initGroups(g []*MetaGroup) {
-	for _, group := range g {
+/*
+	Order:
+	1) init groups
+	2) init items
+	3) init main information
+*/
+
+func (b *DocCompiler) initGroups(meta *DocEngineMeta) {
+	for _, group := range meta.Groups {
 		b.Groups[group.Name] = &DocCompilerGroup{
 			Name:        group.Name,
 			Description: group.Description,
@@ -62,8 +68,38 @@ func (b *DocCompiler) initGroups(g []*MetaGroup) {
 	}
 }
 
-func (b *DocCompiler) initItems(items []*MetaItem, structs map[string]*ast.StructType) {
-	for _, item := range items {
+func (b *DocCompiler) initMainInfo(meta *DocEngineMeta) {
+	//AppName
+	b.MainInfo.AppName = meta.AppName
+
+	//AppVersion
+	b.MainInfo.AppVersion = meta.AppVersion
+
+	//Clean & append groups to main
+	for key, group := range b.Groups {
+		if len(group.Subgroups) == 0 {
+			delete(b.Groups, key)
+			continue
+		}
+
+		b.MainInfo.Groups = append(b.MainInfo.Groups, key)
+		fmt.Printf("Add group `%s`\n", key)
+	}
+
+	//DefaultGroup. If empty then "main"
+	if meta.DefaultGroup == "" {
+		b.MainInfo.DefaultGroup = "main"
+	} else {
+		if _, exists := b.Groups[meta.DefaultGroup]; exists {
+			b.MainInfo.DefaultGroup = meta.DefaultGroup
+		} else {
+			fmt.Printf("@DefaultGroup: undefined group `%s`\n", meta.DefaultGroup)
+		}
+	}
+}
+
+func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
+	for _, item := range meta.Items {
 		//set default group
 		if item.Group == "" {
 			item.Group = "main"
@@ -104,35 +140,5 @@ func (b *DocCompiler) initItems(items []*MetaItem, structs map[string]*ast.Struc
 
 		//add item to [group][subgroup]
 		b.Groups[item.Group].Subgroups[item.Subgroup] = append(b.Groups[item.Group].Subgroups[item.Subgroup], compiledItem)
-	}
-}
-
-func (b *DocCompiler) initMainInfo(meta *DocEngineMeta) {
-	//AppName
-	b.MainInfo.AppName = meta.AppName
-
-	//AppVersion
-	b.MainInfo.AppVersion = meta.AppVersion
-
-	//Clean & append groups to main
-	for key, group := range b.Groups {
-		if len(group.Subgroups) == 0 {
-			delete(b.Groups, key)
-			continue
-		}
-
-		b.MainInfo.Groups = append(b.MainInfo.Groups, key)
-		fmt.Printf("Add group `%s`\n", key)
-	}
-
-	//DefaultGroup. If empty then "main"
-	if meta.DefaultGroup == "" {
-		b.MainInfo.DefaultGroup = "main"
-	} else {
-		if _, exists := b.Groups[meta.DefaultGroup]; exists {
-			b.MainInfo.DefaultGroup = meta.DefaultGroup
-		} else {
-			fmt.Printf("@DefaultGroup: undefined group `%s`\n", meta.DefaultGroup)
-		}
 	}
 }
