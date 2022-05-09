@@ -7,15 +7,15 @@ import (
 	"path"
 )
 
-type DocJSONBuider struct {
+type DocJSONBuilder struct {
 	compiler *DocCompiler
 }
 
-func NewDocJSONBuidler(compiler *DocCompiler) *DocJSONBuider {
-	return &DocJSONBuider{compiler: compiler}
+func NewDocJSONBuidler(compiler *DocCompiler) *DocJSONBuilder {
+	return &DocJSONBuilder{compiler: compiler}
 }
 
-func (d *DocJSONBuider) saveMainInfo(outDir string) error {
+func (d *DocJSONBuilder) saveMainInfo(outDir string) error {
 	js, err := json.MarshalIndent(d.compiler.MainInfo, "", "  ")
 	if err != nil {
 		return err
@@ -35,7 +35,7 @@ func (d *DocJSONBuider) saveMainInfo(outDir string) error {
 	return nil
 }
 
-func (d *DocJSONBuider) saveGroupsInfo(outDir string) error {
+func (d *DocJSONBuilder) saveGroupsInfo(outDir string) error {
 	for _, group := range d.compiler.Groups {
 		js, err := json.MarshalIndent(group, "", "  ")
 		if err != nil {
@@ -57,7 +57,7 @@ func (d *DocJSONBuider) saveGroupsInfo(outDir string) error {
 	return nil
 }
 
-func (d *DocJSONBuider) Save(outDir string) error {
+func (d *DocJSONBuilder) Save(outDir string) error {
 	if err := d.saveMainInfo(outDir); err != nil {
 		return err
 	}

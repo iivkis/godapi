@@ -2,6 +2,8 @@ package docengine
 
 import (
 	"fmt"
+	"go/ast"
+	"os"
 )
 
 type DocCompiler struct {
@@ -32,10 +34,11 @@ type DocCompilerSubgroups map[string][]*DocCompilerSubgroupItem
 
 //Item data
 type DocCompilerSubgroupItem struct {
-	Annotation  string   `json:"annotation"`
-	Description []string `json:"description"`
-	Method      string   `json:"method"`
-	Route       string   `json:"route"`
+	Annotation  string                  `json:"annotation"`
+	Description []string                `json:"description"`
+	Method      string                  `json:"method"`
+	Route       string                  `json:"route"`
+	Params      []*DocCompilerItemParam `json:"params"`
 }
 
 func NewDocCompiler() *DocCompiler {
@@ -59,7 +62,7 @@ func (b *DocCompiler) initGroups(g []*MetaGroup) {
 	}
 }
 
-func (b *DocCompiler) initItems(items []*MetaItem) {
+func (b *DocCompiler) initItems(items []*MetaItem, structs map[string]*ast.StructType) {
 	for _, item := range items {
 		//set default group
 		if item.Group == "" {
@@ -79,16 +82,28 @@ func (b *DocCompiler) initItems(items []*MetaItem) {
 		} else {
 			fmt.Printf("Warning @Group: undefined group `%s`\n", item.Group)
 			fmt.Println(item.ToString())
-			return
+			os.Exit(0)
 		}
 
-		//add item to [group][subgroup]
-		b.Groups[item.Group].Subgroups[item.Subgroup] = append(b.Groups[item.Group].Subgroups[item.Subgroup], &DocCompilerSubgroupItem{
+		//create compiled item
+		compiledItem := &DocCompilerSubgroupItem{
 			Annotation:  item.Annotation,
 			Description: item.Description,
 			Method:      item.Method,
 			Route:       item.Route,
-		})
+			Params:      make([]*DocCompilerItemParam, 0),
+		}
+
+		//add params
+		for _, param := range item.Params {
+			if st, ok := structs[param.StructName]; ok {
+				p := NewDocCompilerItemParam(param.StructName, param.Located, st)
+				compiledItem.Params = append(compiledItem.Params, p)
+			}
+		}
+
+		//add item to [group][subgroup]
+		b.Groups[item.Group].Subgroups[item.Subgroup] = append(b.Groups[item.Group].Subgroups[item.Subgroup], compiledItem)
 	}
 }
 

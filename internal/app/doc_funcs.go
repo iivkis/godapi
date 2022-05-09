@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+var ALLOWED_PARAM_LOCATION = map[string]byte{
+	"body":  0,
+	"query": 0,
+}
+
 /*GLOBAL FUNCS*/
 func setDocGlobalFuncs(doc *docengine.DocEngine) {
 	//arg_1 - name for your app
@@ -40,8 +45,8 @@ func setDocGlobalFuncs(doc *docengine.DocEngine) {
 			}
 		}
 		fmt.Printf("@HideGroup: incorrect group name `%s`", args[0])
-
 		os.Exit(0)
+
 		return nil
 	})
 }
@@ -74,11 +79,11 @@ func setDocItemFuncs(doc *docengine.DocEngine) {
 	//arg_1 - query/body
 	//arg_2 - struct name
 	doc.AddFunc("Param", 2, func(meta *docengine.DocEngineMeta, args []string) error {
-		switch args[0] {
-		case "body":
-			item.Params.BodyStructName = args[len(args)-1] + "." + args[1]
-		case "quert":
-			item.Params.QueryStructName = args[len(args)-1] + "." + args[1]
+		if _, ok := ALLOWED_PARAM_LOCATION[args[0]]; ok {
+			item.Params = append(item.Params, &docengine.MetaItemParam{
+				Located:    args[0],
+				StructName: args[len(args)-1] + "." + args[1],
+			})
 		}
 		return nil
 	})

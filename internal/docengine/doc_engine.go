@@ -33,7 +33,7 @@ func (d *DocEngine) Compile() error {
 	d.compiler.initGroups(d.Meta.Groups)
 
 	//distribution of items by groups and subgroups
-	d.compiler.initItems(d.Meta.Items)
+	d.compiler.initItems(d.Meta.Items, d.Structs)
 
 	//set values to MainInfo
 	d.compiler.initMainInfo(d.Meta)

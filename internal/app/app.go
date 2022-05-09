@@ -82,7 +82,7 @@ func pasrseGoFilesToDocs(docs *docengine.DocEngine) error {
 			return err
 		}
 
-		//set founded structs
+		//set found structs
 		for key, val := range visitor.Structs {
 			docs.Structs[key] = val
 		}
