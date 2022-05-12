@@ -54,10 +54,6 @@ func (w *DocHTMLBuilder) initMinifier() {
 	w.minify.Add("text/javascript", &js.Minifier{})
 }
 
-func (w *DocHTMLBuilder) makeOutDir(outDir string) error {
-	return os.MkdirAll(path.Join(outDir, "./html/src"), os.ModePerm)
-}
-
 func (w *DocHTMLBuilder) renderGroups(outDir string) error {
 	for _, group := range w.compiler.Groups {
 		var buf bytes.Buffer
@@ -111,10 +107,12 @@ func (w *DocHTMLBuilder) copySrc(outDir string) error {
 			if err := w.minify.Minify("text/css", fOut, fIn); err != nil {
 				return err
 			}
+
 		case ".js":
 			if err := w.minify.Minify("text/javascript", fOut, fIn); err != nil {
 				return err
 			}
+
 		default:
 			if _, err := io.Copy(fOut, fIn); err != nil {
 				return err
@@ -126,7 +124,7 @@ func (w *DocHTMLBuilder) copySrc(outDir string) error {
 }
 
 func (w *DocHTMLBuilder) Save(outDir string) error {
-	if err := w.makeOutDir(outDir); err != nil {
+	if err := os.MkdirAll(path.Join(outDir, "./html/src"), os.ModePerm); err != nil {
 		return err
 	}
 

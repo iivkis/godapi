@@ -81,8 +81,9 @@ func setDocItemFuncs(doc *docengine.DocEngine) {
 	doc.AddFunc("Param", 2, func(meta *docengine.DocEngineMeta, args []string) error {
 		if _, ok := ALLOWED_PARAM_LOCATION[args[0]]; ok {
 			item.Params = append(item.Params, &docengine.MetaItemParam{
-				Located:    args[0],
-				StructName: args[len(args)-1] + "." + args[1],
+				Located:        args[0],
+				StructName:     args[1],
+				CurrentPackage: args[2],
 			})
 		}
 		return nil

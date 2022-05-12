@@ -1,12 +1,17 @@
 package app
 
-type AuthWithProviderVKInput struct {
-	Login    string
-	Password string
+type User struct {
+	ID int `json:"id"`
+}
+
+type AuthProviderVKInput struct {
+	Login    []string `json:"my_login"`
+	Password *int     `json:"my_password"`
+	Users    []User   `json:"users"`
 }
 
 //@New "авторизация через VK"
-//@Param body AuthWithProviderVKInput
+//@Param body AuthProviderVKInput
 //@Desc "Метод позволяет авторизоваться через соц. сеть VK"
 //@Group v1 auth
 //@Route post /auth/providers/vk

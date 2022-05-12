@@ -83,7 +83,7 @@ func (b *DocCompiler) initMainInfo(meta *DocEngineMeta) {
 		}
 
 		b.MainInfo.Groups = append(b.MainInfo.Groups, key)
-		fmt.Printf("Add group `%s`\n", key)
+		fmt.Printf("@AddGroup `%s`\n", key)
 	}
 
 	//DefaultGroup. If empty then "main"
@@ -132,8 +132,7 @@ func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
 
 		//add params
 		for _, param := range item.Params {
-			if st, ok := structs[param.StructName]; ok {
-				p := NewDocCompilerItemParam(param.StructName, param.Located, st)
+			if p := NewDocCompilerItemParam(param.StructName, param.CurrentPackage, param.Located, structs); p != nil {
 				compiledItem.Params = append(compiledItem.Params, p)
 			}
 		}

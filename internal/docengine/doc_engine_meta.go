@@ -4,8 +4,9 @@ import "encoding/json"
 
 //Params for item
 type MetaItemParam struct {
-	Located    string //body, query
-	StructName string
+	Located        string //body, query
+	StructName     string
+	CurrentPackage string
 }
 
 //MetaItem
