@@ -45,7 +45,7 @@ func (w *DocHTMLBuilder) initMinifier() {
 		KeepConditionalComments: true,
 		KeepDefaultAttrVals:     true,
 		KeepDocumentTags:        true,
-		KeepQuotes:              true,
+		KeepQuotes:              false,
 		KeepWhitespace:          false,
 	})
 

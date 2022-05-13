@@ -35,6 +35,14 @@
                         {{end}}
                     </div>
                     <!-- /desc -->
+
+                    <!-- params -->
+                    {{range $param := $item.Params}}
+                    <pre class="col-12 bg-dark text-white p-3">
+{{.Text}}
+</pre>
+                    {{end}}
+                    <!-- /params -->
                 </div>
                 <!-- /item information -->
             </a>

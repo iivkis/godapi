@@ -1,6 +1,8 @@
 package docengine
 
 import (
+	"bytes"
+	"fmt"
 	"go/ast"
 	"go/types"
 	"strings"
@@ -57,19 +59,6 @@ func NewDocCompilerItemParam(name string, pkg string, located string, structs Do
 		{
 			f.Name = field.Names[0].Name
 
-			//if have json tag
-			if f.Tag != "" {
-				tag, err := structtag.Parse(f.Tag)
-				if err != nil {
-					panic(err)
-				}
-
-				j, err := tag.Get("json")
-				if err != nil {
-					panic(err)
-				}
-				f.Name = j.Name
-			}
 		}
 
 		//set Type.Name
@@ -94,13 +83,27 @@ func NewDocCompilerItemParam(name string, pkg string, located string, structs Do
 		param.fields = append(param.fields, f)
 	}
 
-	param.FieldsMap = param.toMap()
+	param.FieldsMap = param.ToMap("json")
 	return param
 }
 
-func (d *DocCompilerItemParam) toMap() map[string]interface{} {
+func (d *DocCompilerItemParam) ToMap(tagKey string) map[string]interface{} {
 	m := make(map[string]interface{})
 	for _, field := range d.fields {
+		//if have key tag
+		if tagKey != "" && field.Tag != "" {
+			tag, err := structtag.Parse(field.Tag)
+			if err != nil {
+				panic(err)
+			}
+
+			s, err := tag.Get(tagKey)
+			if err != nil {
+				panic(err)
+			}
+			field.Name = s.Name
+		}
+
 		if field.Node == nil {
 			switch field.Type.Expr.(type) {
 			case *ast.Ident: //simple type
@@ -113,13 +116,40 @@ func (d *DocCompilerItemParam) toMap() map[string]interface{} {
 		} else {
 			switch field.Type.Expr.(type) {
 			case *ast.Ident: //simple type
-				m[field.Name] = field.Node.toMap()
+				m[field.Name] = field.Node.ToMap(tagKey)
 			case *ast.StarExpr: //type with pointer
-				m[field.Name] = field.Node.toMap()
+				m[field.Name] = field.Node.ToMap(tagKey)
 			default: //arrays, maps and other types
-				m[field.Name] = []interface{}{field.Node.toMap()}
+				m[field.Name] = []interface{}{field.Node.ToMap(tagKey)}
 			}
 		}
 	}
 	return m
+}
+
+func (d *DocCompilerItemParam) Text() string {
+	m := d.marshal(d.FieldsMap, 1)
+	fmt.Println(m.String())
+	return string(m.String())
+}
+
+func (d *DocCompilerItemParam) marshal(m map[string]interface{}, deep int) (b bytes.Buffer) {
+	b.WriteString("{")
+	for name, data := range m {
+		b.WriteString(fmt.Sprintf("\n%s%s: ", strings.Repeat("    ", deep), name))
+
+		//print type
+		switch data := data.(type) {
+		case string:
+			b.WriteString(data)
+		case map[string]interface{}:
+			m := d.marshal(data, deep+1)
+			b.WriteString(m.String())
+		case []interface{}:
+			m := d.marshal(data[0].(map[string]interface{}), deep+1)
+			b.WriteString(fmt.Sprintf("[%s]", m.String()))
+		}
+	}
+	b.WriteString(fmt.Sprintf("\n%s}", strings.Repeat("    ", deep-1)))
+	return b
 }
