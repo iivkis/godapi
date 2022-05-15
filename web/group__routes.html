@@ -30,24 +30,21 @@
                 <div class="items_list__wrap col-12 p-2" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info"
                     hidden>
                     <!-- desc -->
-                    <div class="col-12 d-flex flex-column bg-light m-border-left-black">
+                    <div class="col-12 d-flex flex-column bg-light m-border-left-black px-2 py-3">
                         {{range $item.Description}}
-                        <p class="d-block p-2">{{.}}</p>
+                        <div class="d-inline">{{.}}</div>
                         {{end}}
                     </div>
                     <!-- /desc -->
 
                     <!-- params -->
                     {{if $item.Params}}
-                    <b class="d-block mt-2">Параметры</b>
-
+                    <b class="d-block mt-2">Params</b>
                     {{range $param := $item.Params}}
                     <div class="col-12 bg-light pb-1 px-2 m-border-left-black">
                         <i>in {{$param.Located}}</i>
                     </div>
-                    <pre class="col-12 bg-dark text-white p-2">
-{{.Text}}
-</pre>
+                    <pre class="col-12 bg-dark text-white p-2"><b>{{.Text}}</b></pre>
                     {{end}}
                     {{end}}
                     <!-- /params -->

@@ -31,8 +31,9 @@ type DocCompilerItemParamField struct {
 }
 
 func NewDocCompilerItemParam(name string, pkg string, located string, structs DocEngineStructs) *DocCompilerItemParam {
-	s, ok := structs[pkg+"."+name]
-	if !ok {
+	// s, ok := structs[pkg+"."+name]
+	s := structs.Get(pkg, name)
+	if s == nil {
 		return nil
 	}
 
@@ -56,10 +57,7 @@ func NewDocCompilerItemParam(name string, pkg string, located string, structs Do
 		}
 
 		//set Name
-		{
-			f.Name = field.Names[0].Name
-
-		}
+		f.Name = field.Names[0].Name
 
 		//set Type.Name
 		{

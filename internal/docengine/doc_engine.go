@@ -8,6 +8,15 @@ import (
 // key - "[package].[struct_name]"
 type DocEngineStructs map[string]*ast.StructType
 
+func (s DocEngineStructs) Add(pkgName string, structName string, val *ast.StructType) {
+	s[pkgName+"."+structName] = val
+}
+
+func (s DocEngineStructs) Get(pkgName string, structName string) *ast.StructType {
+	return s[pkgName+"."+structName]
+
+}
+
 type DocEngine struct {
 	Meta    *DocEngineMeta
 	Structs DocEngineStructs
