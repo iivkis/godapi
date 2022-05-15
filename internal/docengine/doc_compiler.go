@@ -110,6 +110,10 @@ func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
 			item.Subgroup = "default"
 		}
 
+		if len(item.Description) == 0 {
+			item.Description = append(item.Description, "Description is missing")
+		}
+
 		//check group exists
 		if g := b.Groups[item.Group]; g != nil {
 			if g.hidden {

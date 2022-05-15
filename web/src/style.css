@@ -42,10 +42,11 @@ span[method="DELETE"] {
     cursor: pointer;
 }
 
-.items__list a {
+.items__list a:nth-child(1) {
     text-decoration: none;
     color: #3d3d3d;
 }
+
 
 
 .items_list__route span:nth-child(1) {
@@ -66,6 +67,6 @@ span[method="DELETE"] {
     top: 50%;
 }
 
-.items_list__desc {
+.m-border-left-black {
     border-left: 2px solid black;
 }

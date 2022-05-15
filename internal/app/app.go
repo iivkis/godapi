@@ -4,8 +4,9 @@ import (
 	"flag"
 	"fmt"
 	"go/ast"
-	"godapi/internal/docengine"
 	"os"
+
+	"github.com/iivkis/godapi/internal/docengine"
 )
 
 var appFlags struct {

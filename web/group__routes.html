@@ -14,38 +14,47 @@
         <!-- items -->
         <div class="items__list col-12" id="subgroup-{{$subgroup}}-items">
             {{range $item := $items}}
-            <a class="col-12 d-flex flex-wrap bg-white mt-2 align-items-center shadow-sm"
-                id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
-                href="#{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
-                onclick="toggleItemVisibility('{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info')">
+            <div class="col-12 d-flex flex-wrap bg-white mt-2 align-items-center shadow-sm">
+                <a class="col-12 d-flex" href="#{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
+                    id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
+                    onclick="toggleItemVisibility('{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info')">
+                    <span class="col-1 px-3 p-2" method="{{$item.Method}}">{{$item.Method}}</span>
+                    <div class="items_list__route col-10 mx-3 d-flex align-items-center">
+                        <span>{{$item.Route}}</span>
+                        <span class="mx-3">{{$item.Annotation}}</span>
+                    </div>
+                </a>
 
-                <span class="col-1 px-3 p-2" method="{{$item.Method}}">{{$item.Method}}</span>
-                <div class="items_list__route col-10 mx-3 d-flex align-items-center">
-                    <span>{{$item.Route}}</span>
-                    <span class="mx-3">{{$item.Annotation}}</span>
-                </div>
 
                 <!-- item information -->
                 <div class="items_list__wrap col-12 p-2" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info"
                     hidden>
                     <!-- desc -->
-                    <div class="items_list__desc col-12 d-flex flex-column bg-light">
+                    <div class="col-12 d-flex flex-column bg-light m-border-left-black">
                         {{range $item.Description}}
-                        <p class="p-2">{{.}}</p>
+                        <p class="d-block p-2">{{.}}</p>
                         {{end}}
                     </div>
                     <!-- /desc -->
 
                     <!-- params -->
+                    {{if $item.Params}}
+                    <b class="d-block mt-2">Параметры</b>
+
                     {{range $param := $item.Params}}
-                    <pre class="col-12 bg-dark text-white p-3">
+                    <div class="col-12 bg-light pb-1 px-2 m-border-left-black">
+                        <i>in {{$param.Located}}</i>
+                    </div>
+                    <pre class="col-12 bg-dark text-white p-2">
 {{.Text}}
 </pre>
+                    {{end}}
                     {{end}}
                     <!-- /params -->
                 </div>
                 <!-- /item information -->
-            </a>
+            </div>
+
             {{end}}
         </div>
         <!-- /items -->

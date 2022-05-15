@@ -2,9 +2,10 @@ package app
 
 import (
 	"fmt"
-	"godapi/internal/docengine"
 	"os"
 	"strings"
+
+	"github.com/iivkis/godapi/internal/docengine"
 )
 
 var ALLOWED_PARAM_LOCATION = map[string]byte{

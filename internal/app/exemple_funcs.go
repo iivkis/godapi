@@ -1,17 +1,23 @@
 package app
 
-type User struct {
-	ID int `json:"id"`
+type Auth struct {
+	Token string `json:"token"`
 }
 
-type AuthProviderVKInput struct {
-	Login    []string `json:"my_login"`
-	Password *int     `json:"my_password"`
-	Users    []User   `json:"users"`
+type Book struct {
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	PageCount uint   `json:"page_count"`
+}
+
+type AddBook struct {
+	Author string `json:"author"`
+	Books  []Book `json:"books"`
 }
 
 //@New "авторизация через VK"
-//@Param body AuthProviderVKInput
+//@Param body AddBook
+//@Param query Auth
 //@Desc "Метод позволяет авторизоваться через соц. сеть VK"
 //@Group v1 auth
 //@Route post /auth/providers/vk

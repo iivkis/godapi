@@ -129,7 +129,6 @@ func (d *DocCompilerItemParam) ToMap(tagKey string) map[string]interface{} {
 
 func (d *DocCompilerItemParam) Text() string {
 	m := d.marshal(d.FieldsMap, 1)
-	fmt.Println(m.String())
 	return string(m.String())
 }
 

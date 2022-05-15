@@ -1,6 +1,6 @@
 package main
 
-import "godapi/internal/app"
+import "github.com/iivkis/godapi/internal/app"
 
 //@@AppName "godapi"
 //@@AppVersion 1.1

@@ -1,4 +1,4 @@
-module godapi
+module github.com/iivkis/godapi
 
 go 1.18
 
