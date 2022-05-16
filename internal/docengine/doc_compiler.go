@@ -2,7 +2,6 @@ package docengine
 
 import (
 	"fmt"
-	"os"
 )
 
 type DocCompiler struct {
@@ -42,10 +41,8 @@ type DocCompilerSubgroupItem struct {
 
 func NewDocCompiler() *DocCompiler {
 	return &DocCompiler{
-		MainInfo: &DocCompilerMainInfo{
-			Groups: make([]string, 0),
-		},
-		Groups: make(map[string]*DocCompilerGroup),
+		MainInfo: &DocCompilerMainInfo{Groups: make([]string, 0)},
+		Groups:   make(map[string]*DocCompilerGroup),
 	}
 }
 
@@ -62,13 +59,12 @@ func (b *DocCompiler) initGroups(meta *DocEngineMeta) {
 			Name:        group.Name,
 			Description: group.Description,
 			Subgroups:   make(DocCompilerSubgroups),
-
-			hidden: group.Hidden,
+			hidden:      group.Hidden,
 		}
 	}
 }
 
-func (b *DocCompiler) initMainInfo(meta *DocEngineMeta) {
+func (b *DocCompiler) initMainInfo(meta *DocEngineMeta) error {
 	//AppName
 	b.MainInfo.AppName = meta.AppName
 
@@ -93,12 +89,14 @@ func (b *DocCompiler) initMainInfo(meta *DocEngineMeta) {
 		if _, exists := b.Groups[meta.DefaultGroup]; exists {
 			b.MainInfo.DefaultGroup = meta.DefaultGroup
 		} else {
-			fmt.Printf("@DefaultGroup: undefined group `%s`\n", meta.DefaultGroup)
+			return fmt.Errorf("@@DefaultGroup: undefined group `%s`", meta.DefaultGroup)
 		}
 	}
+
+	return nil
 }
 
-func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
+func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) error {
 	for _, item := range meta.Items {
 		//set default group
 		if item.Group == "" {
@@ -110,19 +108,13 @@ func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
 			item.Subgroup = "default"
 		}
 
-		if len(item.Description) == 0 {
-			item.Description = append(item.Description, "Description is missing")
-		}
-
 		//check group exists
 		if g := b.Groups[item.Group]; g != nil {
 			if g.hidden {
 				continue
 			}
 		} else {
-			fmt.Printf("Warning @Group: undefined group `%s`\n", item.Group)
-			fmt.Println(item.ToString())
-			os.Exit(0)
+			return fmt.Errorf("@Group: undefined group `%s`\n%s", item.Group, item.ToString())
 		}
 
 		//create compiled item
@@ -145,4 +137,6 @@ func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
 		//add item to [group][subgroup]
 		b.Groups[item.Group].Subgroups[item.Subgroup] = append(b.Groups[item.Group].Subgroups[item.Subgroup], compiledItem)
 	}
+
+	return nil
 }

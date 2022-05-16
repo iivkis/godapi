@@ -30,8 +30,12 @@
                 <div class="col-12 p-2" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info" hidden>
                     <!-- desc -->
                     <div class="col-12 d-flex flex-column bg-light m-border-left-black px-2 py-3">
+                        {{if $item.Description}}
                         {{range $item.Description}}
                         <i>{{.}}</i>
+                        {{end}}
+                        {{else}}
+                        <i>Decsription is missing</i>
                         {{end}}
                     </div>
                     <!-- /desc -->

@@ -54,12 +54,14 @@ func openEachFile(inDir string, pattern string, fn func(*ast.File) error) error 
 	})
 }
 
-func scanFileComments(af *ast.File, fn func(comment string)) error {
+func scanFileComments(af *ast.File, fn func(comment string) error) error {
 	for _, commentGroup := range af.Comments {
 		for _, comment := range commentGroup.List {
 			line := []byte(comment.Text)
 			if len(line) > 3 && string(line[:3]) == "//@" {
-				fn(string(line[3:]))
+				if err := fn(string(line[3:])); err != nil {
+					return err
+				}
 			}
 		}
 	}

@@ -44,10 +44,14 @@ func (d *DocEngine) Compile() error {
 	d.compiler.initGroups(d.Meta)
 
 	//distribution of items by groups and subgroups
-	d.compiler.initItems(d.Meta, d.Structs)
+	if err := d.compiler.initItems(d.Meta, d.Structs); err != nil {
+		return err
+	}
 
 	//set values to MainInfo
-	d.compiler.initMainInfo(d.Meta)
+	if err := d.compiler.initMainInfo(d.Meta); err != nil {
+		return err
+	}
 
 	return nil
 }

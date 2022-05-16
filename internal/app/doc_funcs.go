@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/iivkis/godapi/internal/docengine"
@@ -16,13 +15,13 @@ var ALLOWED_PARAM_LOCATION = map[string]byte{
 /*GLOBAL FUNCS*/
 func setDocGlobalFuncs(doc *docengine.DocEngine) {
 	//arg_1 - name for your app
-	doc.AddFunc("@AppName", 1, func(meta *docengine.DocEngineMeta, args []string) error {
+	doc.AddFunc("@SetName", 1, func(meta *docengine.DocEngineMeta, args []string) error {
 		meta.AppName = args[0]
 		return nil
 	})
 
 	//arg_1 - documentation version
-	doc.AddFunc("@AppVersion", 1, func(meta *docengine.DocEngineMeta, args []string) error {
+	doc.AddFunc("@SetVersion", 1, func(meta *docengine.DocEngineMeta, args []string) error {
 		meta.AppVersion = args[0]
 		return nil
 	})
@@ -45,10 +44,7 @@ func setDocGlobalFuncs(doc *docengine.DocEngine) {
 				return nil
 			}
 		}
-		fmt.Printf("@HideGroup: incorrect group name `%s`", args[0])
-		os.Exit(0)
-
-		return nil
+		return fmt.Errorf("@@HideGroup:: undefined group `%s`", args[0])
 	})
 }
 
@@ -68,6 +64,7 @@ func setDocItemFuncs(doc *docengine.DocEngine) {
 		if len(item.Params) == 0 {
 			item.Description = append(item.Description, args[0])
 		} else {
+			//add desc to last param
 			item.Params[len(item.Params)-1].Description = append(item.Params[len(item.Params)-1].Description, args[0])
 		}
 		return nil

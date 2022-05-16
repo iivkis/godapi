@@ -2,9 +2,7 @@ package app
 
 import (
 	"flag"
-	"fmt"
 	"go/ast"
-	"os"
 
 	"github.com/iivkis/godapi/internal/docengine"
 )
@@ -68,18 +66,17 @@ func pasrseGoFilesToDocs(docs *docengine.DocEngine) error {
 		visitor := docengine.NewDocVisitor() //get all file structs
 		ast.Walk(visitor, af)
 
-		//execute each comment
-		if err := scanFileComments(af, func(comment string) {
+		handleComment := func(comment string) error {
 			obj := tokensToObject(tokenize(comment))
-			if err := docs.ExecFunc(&docengine.DocEngineExecFuncArgs{
+			return docs.ExecFunc(&docengine.DocEngineExecFuncArgs{
 				Method:  obj.Method,
 				Args:    obj.Args,
 				Package: visitor.CurrentPackageName,
-			}); err != nil {
-				fmt.Printf("Execute error: %s", err.Error())
-				os.Exit(0)
-			}
-		}); err != nil {
+			})
+		}
+
+		//execute each comment
+		if err := scanFileComments(af, handleComment); err != nil {
 			return err
 		}
 
