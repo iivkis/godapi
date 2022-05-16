@@ -46,6 +46,19 @@ div[located="query"] {
     background: #0091ea;
 }
 
+div[located="path"] {
+    background: #c51162;
+}
+
+div[located="formData"] {
+    background: #f50057;
+}
+
+div[located="header"] {
+    background: #ff3d00;
+}
+
+
 .subgroup__link {
     color: #3d3d3d;
     padding: 0 10px;

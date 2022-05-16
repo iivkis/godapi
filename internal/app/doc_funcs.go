@@ -8,8 +8,11 @@ import (
 )
 
 var ALLOWED_PARAM_LOCATION = map[string]byte{
-	"body":  0,
-	"query": 0,
+	"body":     0,
+	"query":    0,
+	"path":     0,
+	"formData": 0,
+	"header":   0,
 }
 
 /*GLOBAL FUNCS*/
@@ -85,7 +88,7 @@ func setDocItemFuncs(doc *docengine.DocEngine) {
 			item.Params = append(item.Params, &docengine.MetaItemParam{
 				Located:        args[0],
 				StructName:     args[1],
-				CurrentPackage: args[2],
+				CurrentPackage: args[len(args)-1],
 			})
 		}
 		return nil

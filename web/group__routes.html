@@ -47,11 +47,13 @@
                         <span>in {{$param.Located}}</span>
                     </div>
                     <pre class="col-12 bg-dark text-white p-2 m-0"><b>{{.Text}}</b></pre>
+                    {{if $param.Description}}
                     <div class="col-12 p-2 d-flex flex-column bg-light m-border-left-black">
                         {{range $param.Description}}
                         <span>{{.}}</span>
                         {{end}}
                     </div>
+                    {{end}}
                     {{end}}
                     {{end}}
                     <!-- /params -->

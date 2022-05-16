@@ -1,29 +1,24 @@
 package app
 
-type Auth struct {
-	Token string `json:"token"`
+type AuthPath struct {
+	ID int
 }
 
-type Book struct {
-	ID        int    `json:"id"`
-	Name      string `json:"name"`
-	PageCount uint   `json:"page_count"`
+type AddEmployeeInput struct {
+	Name     string `json:"name"`
+	OutletID uint   `json:"outlet_id"`
+	RoleID   uint   `json:"role_id"`
 }
 
-type AddBook struct {
-	Author string `json:"author"`
-	Books  []Book `json:"books"`
-}
-
-//@New "авторизация через VK"
-//@Desc "Метод позволяет авторизоваться через соц. сеть VK"
-//@Group v1 auth
-//@Param body AddBook
-//@Desc "`author` - имя автора. min:1; max:10"
-//@Desc "`books` - массив книг. minlen:1; maxlen:100;"
-//@Param query Auth
-//@Desc "`token` - токен авторизации. example: bafredcf781abf01kla0makf"
-//@Route post /auth/providers/vk
+//@New "добавить сотрудника"
+//@Desc "Метод позволяет добавить сотрудника в точку"
+//@Group v1 Employees
+//@Param body AddEmployeeInput
+//@Desc "`name` - имя сотрудника. min:1, max:200"
+//@Desc "`outlet_id` - точка, к которой сотрудник будет привязан."
+//@Desc "`role_id` - роль. (2 - director, 3 - admin, 4 - cashier); min:2, max:4"
+//@Param path AuthPath
+//@Route post /employees
 
 //@New "авторизация через Google"
 //@Desc "Метод позволяет авторизоваться через Google"
