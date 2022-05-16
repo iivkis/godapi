@@ -63,9 +63,13 @@ func setDocItemFuncs(doc *docengine.DocEngine) {
 		return nil
 	})
 
-	//arg_1 - description for method
+	//arg_1 - description for method or param
 	doc.AddFunc("Desc", 1, func(meta *docengine.DocEngineMeta, args []string) error {
-		item.Description = append(item.Description, args[0])
+		if len(item.Params) == 0 {
+			item.Description = append(item.Description, args[0])
+		} else {
+			item.Params[len(item.Params)-1].Description = append(item.Params[len(item.Params)-1].Description, args[0])
+		}
 		return nil
 	})
 

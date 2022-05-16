@@ -137,6 +137,7 @@ func (b *DocCompiler) initItems(meta *DocEngineMeta, structs DocEngineStructs) {
 		//add params
 		for _, param := range item.Params {
 			if p := NewDocCompilerItemParam(param.StructName, param.CurrentPackage, param.Located, structs); p != nil {
+				p.Description = param.Description
 				compiledItem.Params = append(compiledItem.Params, p)
 			}
 		}

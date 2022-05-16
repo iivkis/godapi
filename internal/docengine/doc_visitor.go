@@ -15,14 +15,18 @@ func NewDocVisitor() *DocVisitor {
 }
 
 func (v *DocVisitor) Visit(n ast.Node) ast.Visitor {
-	if val, ok := n.(*ast.File); ok {
+	switch val := n.(type) {
+	case *ast.File:
 		v.CurrentPackageName = val.Name.Name
-	} else if val, ok := n.(*ast.StructType); ok {
+	case *ast.StructType:
 		v.Structs.Add(v.CurrentPackageName, v.lastIdent.Name, val)
-	} else if val, ok := n.(*ast.Ident); ok {
+	case *ast.Ident:
 		v.lastIdent = val
-	} else if val != nil {
-		v.lastIdent = &ast.Ident{}
+	default:
+		if val != nil {
+			v.lastIdent = &ast.Ident{}
+		}
 	}
+
 	return v
 }

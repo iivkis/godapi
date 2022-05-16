@@ -30,6 +30,21 @@ span[method="DELETE"] {
     background: #ff3d00;
 }
 
+div[located] {
+    background: gainsboro;
+    text-align: center;
+    text-transform: capitalize;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+div[located="body"] {
+    background: #00bfa5;
+}
+
+div[located="query"] {
+    background: #0091ea;
+}
 
 .subgroup__link {
     color: #3d3d3d;
@@ -63,7 +78,7 @@ span[method="DELETE"] {
     border-radius: 100%;
     background: #3d3d3d;
 
-    right: -10px;
+    right: -15px;
     top: 50%;
 }
 

@@ -15,36 +15,39 @@
         <div class="items__list col-12" id="subgroup-{{$subgroup}}-items">
             {{range $item := $items}}
             <div class="col-12 d-flex flex-wrap bg-white mt-2 align-items-center shadow-sm">
-                <a class="col-12 d-flex" href="#{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
-                    id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
+                <a class="col-12 d-flex" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
+                    href="#{{$subgroup}}-{{$item.Method}}-{{$item.Route}}"
                     onclick="toggleItemVisibility('{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info')">
                     <span class="col-1 px-3 p-2" method="{{$item.Method}}">{{$item.Method}}</span>
                     <div class="items_list__route col-10 mx-3 d-flex align-items-center">
                         <span>{{$item.Route}}</span>
-                        <span class="mx-3">{{$item.Annotation}}</span>
+                        <span class="mx-4">{{$item.Annotation}}</span>
                     </div>
                 </a>
 
 
                 <!-- item information -->
-                <div class="items_list__wrap col-12 p-2" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info"
-                    hidden>
+                <div class="col-12 p-2" id="{{$subgroup}}-{{$item.Method}}-{{$item.Route}}-info" hidden>
                     <!-- desc -->
                     <div class="col-12 d-flex flex-column bg-light m-border-left-black px-2 py-3">
                         {{range $item.Description}}
-                        <div class="d-inline">{{.}}</div>
+                        <i>{{.}}</i>
                         {{end}}
                     </div>
                     <!-- /desc -->
 
                     <!-- params -->
                     {{if $item.Params}}
-                    <b class="d-block mt-2">Params</b>
                     {{range $param := $item.Params}}
-                    <div class="col-12 bg-light pb-1 px-2 m-border-left-black">
-                        <i>in {{$param.Located}}</i>
+                    <div class="col-1 p-1 mt-3" located="{{$param.Located}}">
+                        <span>in {{$param.Located}}</span>
                     </div>
-                    <pre class="col-12 bg-dark text-white p-2"><b>{{.Text}}</b></pre>
+                    <pre class="col-12 bg-dark text-white p-2 m-0"><b>{{.Text}}</b></pre>
+                    <div class="col-12 p-2 d-flex flex-column bg-light m-border-left-black">
+                        {{range $param.Description}}
+                        <span>{{.}}</span>
+                        {{end}}
+                    </div>
                     {{end}}
                     {{end}}
                     <!-- /params -->

@@ -11,9 +11,10 @@ import (
 )
 
 type DocCompilerItemParam struct {
-	Name      string                 `json:"name"`
-	Located   string                 `json:"located"`
-	FieldsMap map[string]interface{} `json:"fields"`
+	Name        string                 `json:"name"`
+	Located     string                 `json:"located"`
+	Description []string               `json:"description"`
+	FieldsMap   map[string]interface{} `json:"fields"`
 
 	fields []*DocCompilerItemParamField `json:"-"`
 }
@@ -31,7 +32,6 @@ type DocCompilerItemParamField struct {
 }
 
 func NewDocCompilerItemParam(name string, pkg string, located string, structs DocEngineStructs) *DocCompilerItemParam {
-	// s, ok := structs[pkg+"."+name]
 	s := structs.Get(pkg, name)
 	if s == nil {
 		return nil

@@ -16,10 +16,13 @@ type AddBook struct {
 }
 
 //@New "авторизация через VK"
-//@Param body AddBook
-//@Param query Auth
 //@Desc "Метод позволяет авторизоваться через соц. сеть VK"
 //@Group v1 auth
+//@Param body AddBook
+//@Desc "`author` - имя автора. min:1; max:10"
+//@Desc "`books` - массив книг. minlen:1; maxlen:100;"
+//@Param query Auth
+//@Desc "`token` - токен авторизации. example: bafredcf781abf01kla0makf"
 //@Route post /auth/providers/vk
 
 //@New "авторизация через Google"

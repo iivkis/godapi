@@ -7,6 +7,7 @@ type MetaItemParam struct {
 	Located        string //body, query
 	StructName     string
 	CurrentPackage string
+	Description    []string
 }
 
 //MetaItem
@@ -25,8 +26,7 @@ type MetaItem struct {
 
 func NewMetaItem() *MetaItem {
 	return &MetaItem{
-		Description: make([]string, 0),
-		Params:      make([]*MetaItemParam, 0),
+		Params: make([]*MetaItemParam, 0),
 	}
 }
 
